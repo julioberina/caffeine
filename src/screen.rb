@@ -7,7 +7,7 @@ class Screen
   def initialize(scr = :none)
     @name = scr
     @entities = []
-    @coffee = Gosu::Image.new("../assets/img/coffee.png")
+    @coffee = Gosu::Image.new("assets/img/coffee.png")
   end
 
   def add_entity(entity)
