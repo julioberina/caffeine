@@ -36,6 +36,10 @@ class CaffeineUI < Gosu::Window
         @screen.highlight_left_box unless @screen.box_chosen
       end
     when :gameover
+      if id == KbReturn or id == KbEnter
+        @screen.reset_game
+        @screen.name = :title
+      end
     end
   end
   

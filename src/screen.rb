@@ -20,6 +20,7 @@ class Screen
     # energy bar
     @energy = [[10, 40], [30, 40], [50, 40], [70, 40], [90, 40],
                [110, 40], [130, 40], [150, 40], [170, 40], [190, 40]]
+    @reset_energy = @energy.dup
 
     # box chosen
     @box_chosen = false
@@ -49,6 +50,12 @@ class Screen
     # text to be displayed on screen
     @energy_text = Gosu::Image.from_text(self, "Energy", Gosu.default_font_name, 25)
     @select_text = Gosu::Image.from_text(self, "Select box to reveal its contents", Gosu.default_font_name, 40)
+
+    # gameover properties
+    # deadpic
+    @deadpic = Gosu::Image.new("assets/img/dead.png")
+    @end_font = Gosu::Font.new(40)
+    @reset = Gosu::Font.new(40)
   end
 
   def render
@@ -59,7 +66,7 @@ class Screen
       @title.draw 275, 20, 0
       @play.draw 210, 525, 0
     when :gameplay
-      @bgcolor = Gosu::Color::GRAY
+      @bgcolor = Gosu::Color::BLACK
       draw_rect 0, 0, 800, 600, @bgcolor
       @energy_text.draw 10, 10, 0
       @select_text.draw 175, 150, 0
@@ -74,16 +81,27 @@ class Screen
       end
       
       @box_item.draw(@boxes[@box_highlighted][0], @boxes[@box_highlighted][1], 0) unless @box_item.nil?
+    when :gameover
+      @deadpic.draw 100, 100, 0
+      @end_font.draw "Game Over! You survived " + @hour.to_s + " hours!", 120, 30, 0
+      @reset.draw "Press Enter to reset the game", 165, 500, 0
     end
   end
 
   def inc_hour
     @hour += 1
 
-    unless @last_chosen == "brew" or @carbs_count == 3
+    unless @last_chosen == "brew" or @carbs_count >= 3
       @energy.pop
-      @carbs_count = 0 if @carbs_count >= 3
     end
+
+    if @carbs_count == 3 then @carbs_count -= 1 until @carbs_count == 0 end
+  end
+
+  def reset_game
+    @energy = @reset_energy.dup
+    @carbs_count = 0
+    @hour = 0
   end
 
   def box_chosen
@@ -124,7 +142,7 @@ class Screen
   end
 
   def gray_out_boxes
-    @box_color = Gosu::Color::GRAY
+    @box_color = Gosu::Color::BLACK
   end
 
   def draw_back(frame)
