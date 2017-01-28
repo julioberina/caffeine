@@ -16,7 +16,7 @@ class CaffeineUI < Gosu::Window
   
   # ---------- BEGIN Gosu Window functions ----------
 
-  def button_down(id)
+  def button_up(id)
     case @screen.name
     when :title
       if id == KbReturn or id == KbEnter
