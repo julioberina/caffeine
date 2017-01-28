@@ -2,27 +2,29 @@
 # manages which screen to display for user interface
 
 class Screen
-  attr_writer :name
+  attr_accessor :name
   
   def initialize(scr = :none)
     @name = scr
-    @entities = []
     @coffee = Gosu::Image.new("assets/img/coffee.png")
-  end
-
-  def add_entity(entity)
-    @entities << entity
-  end
-
-  def clear_entities
-    @entities.pop until @entities.empty?
+    @title = Gosu::Image.from_text(self, "CAFFEINE!!!!", Gosu.default_font_name, 60)
+    @bgcolor = Gosu::Color::RED
   end
 
   def render
     case @name
-    when :gameplay
-      draw_rect 0, 0, 800, 600, Gosu::Color::RED
-      @coffee.draw 300, 200, 0
+    when :title
+      draw_rect 0, 0, 800, 600, @bgcolor
+      @coffee.draw 300, 150, 0
+      @title.draw 275, 20, 0
+    end
+  end
+
+  def draw_back(frame)
+    if frame < 30
+      @bgcolor = Gosu::Color::RED
+    else
+      @bgcolor = Gosu::Color::BLUE
     end
   end
 end
