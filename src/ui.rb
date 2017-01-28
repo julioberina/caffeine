@@ -17,7 +17,14 @@ class CaffeineUI < Gosu::Window
   # ---------- BEGIN Gosu Window functions ----------
 
   def button_down(id)
-    
+    case @screen.name
+    when :title
+      if id == KbReturn or id == KbEnter
+        @screen.name = :gameplay
+      end
+    when @screen.name == :gameplay
+    when @screen.name == :gameover
+    end
   end
   
   def update

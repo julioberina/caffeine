@@ -5,10 +5,18 @@ class Screen
   attr_accessor :name
   
   def initialize(scr = :none)
+    # universal screen entities
     @name = scr
+    @bgcolor = Gosu::Color::RED
+    @bgmusic = Gosu::Song.new("assets/wav/techno.wav")
+    @bgmusic.play(true)
+    
+    # title screen entities
     @coffee = Gosu::Image.new("assets/img/coffee.png")
     @title = Gosu::Image.from_text(self, "CAFFEINE!!!!", Gosu.default_font_name, 60)
-    @bgcolor = Gosu::Color::RED
+    @play = Gosu::Image.from_text(self, "Press Enter to Play", Gosu.default_font_name, 60)
+
+    # gameplay screen entities
   end
 
   def render
@@ -17,6 +25,7 @@ class Screen
       draw_rect 0, 0, 800, 600, @bgcolor
       @coffee.draw 300, 150, 0
       @title.draw 275, 20, 0
+      @play.draw 210, 525, 0
     end
   end
 
